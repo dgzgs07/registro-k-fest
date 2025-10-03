@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario de Registro</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <form id="registro">
+
+        <h2>Registro K-Fest</h2>
+        <input type="text" name= "nombre" placeholder="Nombre">
+        <input type="text" name= "bias" placeholder="Bias o grupo favorito">
+        <input type="text" name= "ciudad" placeholder="Ciudad/Estado">
+        <input type="text" name= "contacto" placeholder="Ig o número">
+        <input type="number" name= "edad" placeholder="Edad">
+        <input type="text" name= "gusto" placeholder="¿Qué es lo que te gusta de K-Fest?">
+
+        <input type="submit" class="btn" value="Confirmar">
+    </form>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbw1VuTT5vy2eVulGWt1Cn3TGwPCeON4HvwmxorayQobNQ3zvdNA8bS8-_7BL7g3Uhjj/exec"
+        const form = document.getElementById('registro');
+
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+
+            const formData = new URLSearchParams(new FormData(form)); 
+
+            try {
+                const resp = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData
+                });
+
+                const json = await resp.json();
+                if (json.status === 'success') {
+                    alert('Registro guardado correctamente.');
+                    form.reset();
+                } else {
+                    alert('Error en el servidor: ' + (json.message || 'desconocido'));
+                }
+            } catch (err) {
+                alert('Error al enviar: ' + err.message);
+            }
+        });
+    </script>
+</body>
+</html>
